@@ -1,3 +1,7 @@
+"use client";
+
+import dynamic from "next/dynamic";
+import SensorStatusPanel from "@/components/dashboard/SensorStatusPanel";
 import AlertPanel from "@/components/dashboard/AlertPanel";
 import ObjectDetection from "@/components/dashboard/ObjectDetection";
 import PathStatus from "@/components/dashboard/PathStatus";
@@ -5,6 +9,15 @@ import RiskPanel from "@/components/dashboard/RiskPanel";
 import VehicleStatus from "@/components/dashboard/VehicleStatus";
 import RoadQualityPanel from "@/components/dashboard/RoadQualityPanel";
 import StatCardsRow from "@/components/dashboard/StatCardsRow";
+
+const DrivingScene3D = dynamic(() => import("@/components/dashboard/DrivingScene3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full min-h-[320px] rounded-xl bg-[#0d1520] flex items-center justify-center text-slate-500 text-sm">
+      Loading 3D scene…
+    </div>
+  ),
+});
 
 export default function DashboardPage() {
   return (
@@ -15,8 +28,7 @@ export default function DashboardPage() {
       {/* Row 2: Live Road View + Sidebar (Aligned Heights) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
         <div className="lg:col-span-2 flex flex-col gap-4 h-full">
-          {/* Live Road View — flex-1 use kiya hai taaki baki ki bachi hui height fill ho jaye */}
-          <div className="bg-[#0d1520] border border-white/10 rounded-xl flex-1 min-h-[320px]" />
+          <DrivingScene3D />
           <PathStatus />
         </div>
 
@@ -29,9 +41,7 @@ export default function DashboardPage() {
       {/* Row 3: Risk History + Sensor Status + Recent Alerts */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <RiskPanel />
-        <div className="bg-[#0d1520] border border-white/10 rounded-xl p-4">
-          {/* Sensor Status placeholder */}
-        </div>
+        <SensorStatusPanel />
         <AlertPanel />
       </div>
 
